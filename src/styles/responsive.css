@@ -1,0 +1,160 @@
+/* ===== RESPONSIVE BREAKPOINTS ===== */
+
+/* Tablet */
+@media (max-width: 1024px) {
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: var(--space-lg);
+    }
+
+    .category-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-lg);
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+
+    /* Header */
+    .header__nav {
+        display: none;
+    }
+
+    .header__hamburger {
+        display: flex !important;
+    }
+
+    .mobile-nav {
+        display: flex !important;
+    }
+
+    .mobile-nav.open {
+        transform: translateX(0);
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* Hero */
+    .hero__content {
+        text-align: center;
+        padding: var(--space-2xl) 0;
+    }
+
+    .hero__actions {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    /* Grids */
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-md);
+    }
+
+    .category-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: var(--space-md);
+    }
+
+    /* Product Detail */
+    .product-detail {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Section spacing */
+    .section {
+        padding: var(--space-3xl) 0;
+    }
+
+    .section-header__title {
+        font-size: clamp(1.3rem, 5vw, 2rem);
+    }
+
+    /* Search */
+    .header__search {
+        display: none;
+    }
+
+    .mobile-search {
+        display: block !important;
+        padding: var(--space-md) var(--container-padding);
+    }
+
+    /* Category card */
+    .category-card {
+        padding: var(--space-lg);
+    }
+
+    .category-card__icon {
+        font-size: 2rem;
+        margin-bottom: var(--space-md);
+    }
+
+    /* Pills */
+    .pills-row {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding-bottom: var(--space-sm);
+    }
+
+    .pills-row::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Footer */
+    .footer__grid {
+        grid-template-columns: 1fr !important;
+        gap: var(--space-2xl);
+    }
+
+    /* WhatsApp FAB */
+    .whatsapp-fab {
+        bottom: 1.25rem;
+        right: 1.25rem;
+    }
+
+    .whatsapp-fab a {
+        width: 52px;
+        height: 52px;
+    }
+
+    /* Spec Table */
+    .spec-table td {
+        padding: var(--space-sm) var(--space-md);
+    }
+
+    /* Contact grid */
+    .contact-grid {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+    .product-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .category-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .btn-lg {
+        padding: 0.85rem 1.75rem;
+        font-size: var(--fs-small);
+    }
+
+    .hero__title {
+        font-size: clamp(2rem, 8vw, 3rem);
+    }
+
+    .product-card__body {
+        padding: var(--space-md);
+    }
+
+    .product-card__name {
+        font-size: 1rem;
+    }
+}

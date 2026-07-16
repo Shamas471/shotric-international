@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+  <!-- ═══════════════════════════════════════════
+       SHOTRIC INTERNATIONAL — XML SITEMAP
+       https://www.shotricinternational.com
+       Generated: 2026-06-18
+  ═══════════════════════════════════════════ -->
+
+  <!-- Homepage -->
+  <url>
+    <loc>https://www.shotricinternational.com/</loc>
+    <lastmod>2026-06-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://www.shotricinternational.com/hero_bg_boxing.png</image:loc>
+      <image:title>Premium Boxing Gloves Manufacturer — Shotric International</image:title>
+      <image:caption>Factory direct OEM and private label boxing equipment manufacturing from Sialkot, Pakistan</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Products — Top Level -->
+  <url>
+    <loc>https://www.shotricinternational.com/products/</loc>
+    <lastmod>2026-06-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Combat Sports Products -->
+  <url>
+    <loc>https://www.shotricinternational.com/products/boxing-gloves/</loc>
+    <lastmod>2026-06-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://www.shotricinternational.com/cat_combat_sports.png</image:loc>
+      <image:title>OEM Boxing Gloves Manufacturer — Custom &amp; Private Label</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://www.shotricinternational.com/products/mma-gloves/</loc>
+    <lastmod>2026-06-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <url>
+    <loc>https://www.shotricinternational.com/products/headgear/</loc>
+    <lastmod>2026-06-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.shotricinternational.com/products/punch-mitts/</loc>
+    <lastmod>2026-06-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.shotricinternational.com/products/heavy-bags/</loc>
+    <lastmod>2026-06-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+
+  <url>
+    <loc>https://www.shotricinternational.com/products/muay-thai/</loc>
+    <lastmod>2026-06-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+
+  <!-- Apparel Products -->
+  <url>
+    <loc>https://www.shotricinternational.com/products/sportswear/</loc>
+    <lastmod>2026-06-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.88</priority>
+    <image:image>
+      <image:loc>https://www.shotricinternational.com/cat_apparel.png</image:loc>
+      <image:title>Custom Sportswear Manufacturer — Tracksuits, Hoodies &amp; Compression Wear</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://www.shotricinternational.com/products/shorts/</loc>
+    <lastmod>2026-06-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.78</priority>
+  </url>
+
+  <url>
+    <loc>https://www.shotricinternational.com/products/rashguards/</loc>
+    <lastmod>2026-06-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.78</priority>
+  </url>
+
+  <!-- Services -->
+  <url>
+    <loc>https://www.shotricinternational.com/oem-manufacturing/</loc>
+    <lastmod>2026-06-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.95</priority>
+  </url>
+
+  <url>
+    <loc>https://www.shotricinternational.com/private-label/</loc>
+    <lastmod>2026-06-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.92</priority>
+  </url>
+
+  <url>
+    <loc>https://www.shotricinternational.com/wholesale/</loc>
+    <lastmod>2026-06-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <url>
+    <loc>https://www.shotricinternational.com/export-catalog/</loc>
+    <lastmod>2026-06-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.88</priority>
+  </url>
+
+  <url>
+    <loc>https://www.shotricinternational.com/sampling/</loc>
+    <lastmod>2026-06-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+
+  <!-- Company -->
+  <url>
+    <loc>https://www.shotricinternational.com/about/</loc>
+    <lastmod>2026-06-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.shotricinternational.com/manufacturing/</loc>
+    <lastmod>2026-06-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.shotricinternational.com/certifications/</loc>
+    <lastmod>2026-06-18</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.65</priority>
+  </url>
+
+  <url>
+    <loc>https://www.shotricinternational.com/contact/</loc>
+    <lastmod>2026-06-18</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.75</priority>
+  </url>
+
+  <!-- Legal -->
+  <url>
+    <loc>https://www.shotricinternational.com/privacy/</loc>
+    <lastmod>2026-06-18</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <url>
+    <loc>https://www.shotricinternational.com/terms/</loc>
+    <lastmod>2026-06-18</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+</urlset>

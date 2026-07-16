@@ -1,0 +1,48 @@
+# ═══════════════════════════════════════════════════════
+# SHOTRIC INTERNATIONAL — robots.txt
+# https://www.shotricinternational.com
+# ═══════════════════════════════════════════════════════
+
+# Allow all major search engines full access
+User-agent: *
+Allow: /
+
+# Disallow admin, private, and system paths
+Disallow: /admin/
+Disallow: /api/
+Disallow: /private/
+Disallow: /*.json$
+Disallow: /node_modules/
+Disallow: /.git/
+
+# Allow Google Image crawler full access
+User-agent: Googlebot-Image
+Allow: /
+
+# Allow Google Ads crawler
+User-agent: AdsBot-Google
+Allow: /
+
+# Specific rules for Bingbot
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 2
+
+# Block bad bots / scrapers
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+# Sitemap location
+Sitemap: https://www.shotricinternational.com/sitemap.xml
+
+# Canonical host
+Host: www.shotricinternational.com
