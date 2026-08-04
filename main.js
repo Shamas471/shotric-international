@@ -547,38 +547,122 @@ const PRODUCTS = {
     moq: '50 units', lead: '15–25 days', material: '100% Polyester Dry-Fit',
     tags: ['Full Custom', 'Private Label', 'Sublimation', 'Wholesale'],
   },
+
+  'muay-thai-pads': {
+    title: 'Muay Thai Curved Pads', category: 'Combat Sports', badge: 'Best Seller',
+    gallery: [
+      { src: '/muay-thai-pads-red.png', color: 'Red / Black',  swatch: '#b91c1c' },
+      { src: '/kick-shield-black.png',  color: 'All Black',    swatch: '#111111' },
+    ],
+    desc: 'Professional curved Muay Thai pads with multi-layer foam core and full-grain leather shell. Ergonomic arm strap for trainer comfort. Custom logo, colour and branding available for gyms and equipment brands worldwide.',
+    moq: '25 pairs', lead: '20–30 days', material: 'Full-Grain Leather · Multi-Layer Foam',
+    tags: ['Best Seller', 'OEM', 'Private Label', 'Muay Thai', 'Wholesale'],
+  },
+
+  'kick-shield': {
+    title: 'Kick Shield / Strike Pad', category: 'Combat Sports', badge: 'OEM Ready',
+    gallery: [
+      { src: '/kick-shield-black.png', color: 'Black / Red', swatch: '#111111' },
+      { src: '/muay-thai-pads-red.png', color: 'Red / Black', swatch: '#b91c1c' },
+    ],
+    desc: 'Heavy-duty rectangular kick shield designed for powerful kicks, knees and punching drills. Reinforced handle system with thick foam padding. Available in custom sizes, colours and logo branding.',
+    moq: '25 units', lead: '20–30 days', material: 'PU Leather · High-Density EVA Foam',
+    tags: ['OEM', 'Private Label', 'Kick Boxing', 'Muay Thai', 'Wholesale'],
+  },
+
+  'bjj-gi': {
+    title: 'BJJ Gi / Jiu Jitsu Uniform', category: 'Combat Sports', badge: 'Full Custom',
+    gallery: [
+      { src: '/bjj-gi-black.png', color: 'Black / Red', swatch: '#111111' },
+    ],
+    desc: 'IBJJF-legal Brazilian Jiu Jitsu Gi made from pre-shrunk pearl weave cotton. Reinforced stitching at all stress points. Full custom embroidery on jacket and pants including belt loop, collar and patch positions.',
+    moq: '50 units', lead: '25–40 days', material: 'Pearl Weave Cotton · Ripstop Pants',
+    tags: ['Full Custom', 'OEM', 'BJJ', 'Grappling', 'Wholesale'],
+  },
+
+  'boxing-shoes': {
+    title: 'High-Top Boxing Shoes', category: 'Combat Sports', badge: 'OEM Ready',
+    gallery: [
+      { src: '/boxing-shoes-black.png', color: 'Black / Red', swatch: '#111111' },
+    ],
+    desc: 'Lightweight high-top boxing shoes with non-slip rubber sole, ankle support and breathable mesh upper. Available in custom colours, sizes and branding for combat sports brands and team kits.',
+    moq: '50 pairs', lead: '30–45 days', material: 'Mesh Upper · Rubber Non-Slip Sole',
+    tags: ['OEM', 'Private Label', 'Boxing', 'Footwear', 'Wholesale'],
+  },
+
+  'grappling-dummy': {
+    title: 'Grappling / MMA Training Dummy', category: 'Gym Equipment', badge: 'OEM Ready',
+    gallery: [
+      { src: '/grappling-dummy-black.png', color: 'Black / Red', swatch: '#111111' },
+    ],
+    desc: 'Professional standing MMA grappling dummy for solo training of takedowns, throws, chokes and ground-and-pound. High-density foam filling with durable vinyl shell. Custom logo and colours available.',
+    moq: '10 units', lead: '25–35 days', material: 'Vinyl Shell · High-Density Foam Fill',
+    tags: ['OEM', 'Wholesale', 'MMA', 'Wrestling', 'Grappling'],
+  },
+
+  'compression-shorts': {
+    title: 'Vale Tudo Compression Shorts', category: 'Apparel', badge: 'Full Custom',
+    gallery: [
+      { src: '/compression-shorts-black.png', color: 'Black / Red', swatch: '#111111' },
+    ],
+    desc: '4-way stretch spandex compression vale tudo shorts for MMA, BJJ and grappling training. Full sublimation printing available for custom logos, patterns and team colours. Anti-microbial fabric treatment.',
+    moq: '50 units', lead: '15–25 days', material: '82% Polyester · 18% Spandex',
+    tags: ['Full Custom', 'Sublimation', 'MMA', 'Grappling', 'Private Label'],
+  },
+
+  'ankle-guards': {
+    title: 'MMA Ankle Guards / Supports', category: 'Protective Gear', badge: 'OEM Ready',
+    gallery: [
+      { src: '/ankle-guards-black.png', color: 'Black / Red', swatch: '#111111' },
+    ],
+    desc: 'Neoprene MMA ankle guards providing joint support and protection during sparring and ground work. Slip-on design with non-slip grip strip. Custom logo heat-transfer or embroidery available.',
+    moq: '50 pairs', lead: '15–25 days', material: 'Neoprene · Velcro Closure',
+    tags: ['OEM', 'Private Label', 'MMA', 'Protection', 'Wholesale'],
+  },
+
+  'wrist-wraps': {
+    title: 'Boxing Wrist Wraps', category: 'Accessories', badge: 'Best Seller',
+    gallery: [
+      { src: '/wrist-wraps-red.png',  color: 'Red / White',  swatch: '#b91c1c' },
+      { src: '/hand-wraps-black.png', color: 'Black / White', swatch: '#111111' },
+    ],
+    desc: 'Premium elasticated wrist wraps providing firm wrist support for heavy bag, pad work and weight training. Custom woven label with gym or brand logo. Available in all colours, MOQ 100 pairs.',
+    moq: '100 pairs', lead: '15–20 days', material: 'Elastic Cotton Blend · Velcro',
+    tags: ['Best Seller', 'OEM', 'Private Label', 'Boxing', 'Wholesale'],
+  },
 };
+
 
 const CATEGORIES = {
   'combat-sports': {
     title: 'Combat Sports Equipment', eyebrow: 'Category 01',
     img: '/boxing-gloves-shotric.png',
     desc: 'Factory-direct manufacturing of premium boxing, MMA and combat sports equipment. All products available in OEM, private label and wholesale.',
-    products: ['boxing-gloves', 'mma-gloves', 'head-guards', 'hand-wraps', 'punch-mitts', 'heavy-bag', 'shin-guards'],
+    products: ['boxing-gloves', 'mma-gloves', 'head-guards', 'hand-wraps', 'punch-mitts', 'heavy-bag', 'shin-guards', 'muay-thai-pads', 'kick-shield', 'bjj-gi', 'boxing-shoes'],
   },
   'apparel': {
     title: 'Combat Sports Apparel', eyebrow: 'Category 02',
     img: '/tracksuit-shotric.png',
     desc: 'Custom combat sports apparel including tracksuits, hoodies, rash guards, fight shorts and compression wear. Full sublimation and embroidery available.',
-    products: ['tracksuits', 'hoodie', 'rash-guard', 'fight-shorts'],
+    products: ['tracksuits', 'hoodie', 'rash-guard', 'fight-shorts', 'compression-shorts'],
   },
   'protective-gear': {
     title: 'Protective Gear', eyebrow: 'Category 03',
     img: '/category-protective-gear.png',
-    desc: 'Full range of OEM protective equipment — body protectors, groin guards, knee pads and elbow pads. Custom logo, colours and packaging for gym brands worldwide.',
-    products: ['body-protector', 'groin-guard', 'knee-pads', 'elbow-pads'],
+    desc: 'Full range of OEM protective equipment — body protectors, groin guards, knee pads, elbow pads and ankle guards. Custom logo, colours and packaging for gym brands worldwide.',
+    products: ['body-protector', 'groin-guard', 'knee-pads', 'elbow-pads', 'ankle-guards'],
   },
   'gym-equipment': {
     title: 'Gym Equipment', eyebrow: 'Category 04',
     img: '/category-gym-equipment.png',
-    desc: 'Professional boxing gym equipment including speed bags, skipping ropes and training accessories. Wholesale and private label manufacturing with custom branding.',
-    products: ['speed-bag', 'skipping-rope'],
+    desc: 'Professional boxing gym equipment including grappling dummies, speed bags, skipping ropes and training accessories. Wholesale and private label manufacturing with custom branding.',
+    products: ['speed-bag', 'skipping-rope', 'grappling-dummy'],
   },
   'accessories': {
     title: 'Accessories & Merchandise', eyebrow: 'Category 05',
     img: '/category-accessories.png',
-    desc: 'Custom branded gym bags, sports t-shirts and merchandise. Perfect for gym merchandise lines, team kits and corporate gifting. Full private label available.',
-    products: ['gym-bag', 'tshirt'],
+    desc: 'Custom branded gym bags, sports t-shirts, wrist wraps and merchandise. Perfect for gym merchandise lines, team kits and corporate gifting. Full private label available.',
+    products: ['gym-bag', 'tshirt', 'wrist-wraps'],
   },
 };
 
