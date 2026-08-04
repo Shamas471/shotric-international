@@ -765,22 +765,29 @@ function closeCatModal() {
   document.body.style.overflow = '';
 }
 
-/* ── Event wiring ─────────────────────────────────── */
-document.getElementById('pd-close').addEventListener('click', closePdModal);
-document.getElementById('pd-backdrop').addEventListener('click', closePdModal);
-document.getElementById('cat-close').addEventListener('click', closeCatModal);
-document.getElementById('cat-backdrop').addEventListener('click', closeCatModal);
-
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { closePdModal(); closeCatModal(); }
-});
-
-document.querySelectorAll('.pd-modal__quote-btn, [href="#get-quote"]').forEach(btn => {
-  btn.addEventListener('click', () => { closePdModal(); closeCatModal(); });
-});
-
-/* ── Global exports (used by onclick= attributes) ─── */
+/* ── Global exports — must be assigned FIRST so onclick= attrs always work ─── */
 window.openProductModal  = openProductModal;
 window.openCategoryModal = openCategoryModal;
 window.closePdModal      = closePdModal;
 window.closeCatModal     = closeCatModal;
+
+/* ── Event wiring (null-safe) ──────────────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', function () {
+  const pdClose    = document.getElementById('pd-close');
+  const pdBackdrop = document.getElementById('pd-backdrop');
+  const catClose   = document.getElementById('cat-close');
+  const catBackdrop= document.getElementById('cat-backdrop');
+
+  if (pdClose)    pdClose.addEventListener('click', closePdModal);
+  if (pdBackdrop) pdBackdrop.addEventListener('click', closePdModal);
+  if (catClose)   catClose.addEventListener('click', closeCatModal);
+  if (catBackdrop)catBackdrop.addEventListener('click', closeCatModal);
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') { closePdModal(); closeCatModal(); }
+  });
+
+  document.querySelectorAll('.pd-modal__quote-btn, [href="#get-quote"]').forEach(function(btn) {
+    btn.addEventListener('click', function() { closePdModal(); closeCatModal(); });
+  });
+});
