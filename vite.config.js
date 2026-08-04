@@ -9,19 +9,9 @@ export default defineConfig({
         admin: "admin.html",
       }
     },
-    /* Minify + chunk splitting for faster loading */
-    minify: "terser",
-    terserOptions: {
-      compress: { drop_console: true, drop_debugger: true }
-    },
-    chunkSizeWarningLimit: 1000,
+    minify: "esbuild",   /* esbuild is built-in, no extra install needed */
     cssMinify: true,
-    assetsInlineLimit: 4096, /* inline small assets < 4KB */
-  },
-  /* Preload key assets */
-  server: {
-    headers: {
-      "Cache-Control": "public, max-age=31536000"
-    }
+    assetsInlineLimit: 4096,
+    chunkSizeWarningLimit: 1000,
   }
 });
