@@ -787,7 +787,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 /* ============================================================
-   REVIEWS — Submit, Save to localStorage, Render in Carousel
+   REVIEWS ï¿½ Submit, Save to localStorage, Render in Carousel
    ============================================================ */
 
 function getInitials(name) {
@@ -961,3 +961,18 @@ document.addEventListener('DOMContentLoaded', function() {
   var obs = new MutationObserver(updateEmpty);
   obs.observe(track, { childList: true });
 });
+
+/* -- Review button event wiring (replaces onclick= attr) -- */
+(function() {
+  function wireReviewBtn() {
+    var btn = document.getElementById('open-review-modal');
+    if (btn) {
+      btn.addEventListener('click', function() { openReviewModal(); });
+      return true;
+    }
+    return false;
+  }
+  if (!wireReviewBtn()) {
+    document.addEventListener('DOMContentLoaded', wireReviewBtn);
+  }
+})();
