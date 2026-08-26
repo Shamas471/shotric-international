@@ -785,3 +785,163 @@ document.addEventListener('DOMContentLoaded', function () {
     btn.addEventListener('click', function() { closePdModal(); closeCatModal(); });
   });
 });
+
+/* ============================================================
+   REVIEWS — Submit, Save to localStorage, Render in Carousel
+   ============================================================ */
+
+function getInitials(name) {
+  return name.trim().split(' ').slice(0,2).map(function(w){ return w[0].toUpperCase(); }).join('');
+}
+
+function starsHtml(n) {
+  var s = '';
+  for (var i = 0; i < n; i++) s += '\u2605';
+  for (var j = n; j < 5; j++) s += '\u2606';
+  return s;
+}
+
+function renderUserReview(r) {
+  var card = document.createElement('div');
+  card.className = 'review-card';
+  card.innerHTML =
+    '<div class="review-card__top">' +
+      '<div class="review-card__avatar">' + getInitials(r.name) + '</div>' +
+      '<div>' +
+        '<strong class="review-card__name">' + r.name + '</strong>' +
+        '<span class="review-card__location">' + r.country + '</span>' +
+      '</div>' +
+      '<div class="review-card__stars">' + starsHtml(parseInt(r.rating)) + '</div>' +
+    '</div>' +
+    '<p class="review-card__text">&ldquo;' + r.text + '&rdquo;</p>' +
+    '<span class="review-card__product">' + r.product + '</span>';
+  return card;
+}
+
+function loadUserReviews() {
+  var track = document.getElementById('reviews-track');
+  if (!track) return;
+  var stored = JSON.parse(localStorage.getItem('shotric_reviews') || '[]');
+  stored.forEach(function(r) {
+    var card = renderUserReview(r);
+    track.insertBefore(card, track.firstChild);
+    // Also append a clone at the end to keep seamless loop
+    track.appendChild(renderUserReview(r));
+  });
+}
+
+// Open / close review modal
+function openReviewModal() {
+  var modal = document.getElementById('review-modal');
+  var formWrap = document.getElementById('review-form-wrap');
+  var success = document.getElementById('review-success');
+  if (!modal) return;
+  if (formWrap) formWrap.hidden = false;
+  if (success)  success.hidden  = true;
+  resetStars();
+  document.getElementById('review-submit-form') && document.getElementById('review-submit-form').reset();
+  modal.classList.add('is-open');
+  modal.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeReviewModal() {
+  var modal = document.getElementById('review-modal');
+  if (!modal) return;
+  modal.classList.remove('is-open');
+  modal.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+}
+
+// Star picker logic
+var currentRating = 0;
+
+function resetStars() {
+  currentRating = 0;
+  document.querySelectorAll('.rsp-star').forEach(function(s){ s.classList.remove('active','hover'); });
+  var hint = document.getElementById('rsp-hint');
+  if (hint) hint.textContent = 'Click to rate';
+  var ratingInput = document.getElementById('review-rating');
+  if (ratingInput) ratingInput.value = '0';
+}
+
+function initStarPicker() {
+  var hints = ['', 'Poor', 'Fair', 'Good', 'Great', 'Excellent'];
+  document.querySelectorAll('.rsp-star').forEach(function(star) {
+    star.addEventListener('mouseenter', function() {
+      var val = parseInt(star.dataset.val);
+      document.querySelectorAll('.rsp-star').forEach(function(s){
+        s.classList.toggle('hover', parseInt(s.dataset.val) <= val);
+      });
+    });
+    star.addEventListener('mouseleave', function() {
+      document.querySelectorAll('.rsp-star').forEach(function(s){ s.classList.remove('hover'); });
+    });
+    star.addEventListener('click', function() {
+      currentRating = parseInt(star.dataset.val);
+      document.querySelectorAll('.rsp-star').forEach(function(s){
+        s.classList.toggle('active', parseInt(s.dataset.val) <= currentRating);
+      });
+      var ratingInput = document.getElementById('review-rating');
+      if (ratingInput) ratingInput.value = currentRating;
+      var hint = document.getElementById('rsp-hint');
+      if (hint) hint.textContent = hints[currentRating] || '';
+    });
+  });
+}
+
+// Form submit
+document.addEventListener('DOMContentLoaded', function() {
+  loadUserReviews();
+  initStarPicker();
+
+  var form = document.getElementById('review-submit-form');
+  if (!form) return;
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var name    = document.getElementById('rv-name').value.trim();
+    var country = document.getElementById('rv-country').value.trim();
+    var product = document.getElementById('rv-product').value.trim();
+    var text    = document.getElementById('rv-text').value.trim();
+    var rating  = parseInt(document.getElementById('review-rating').value || '0');
+
+    // Validate
+    var valid = true;
+    [document.getElementById('rv-name'), document.getElementById('rv-country'),
+     document.getElementById('rv-product'), document.getElementById('rv-text')].forEach(function(el) {
+      if (!el.value.trim()) { el.style.borderColor='var(--clr-red)'; valid=false; }
+      else el.style.borderColor='';
+    });
+    if (rating < 1) {
+      var hint = document.getElementById('rsp-hint');
+      if (hint) { hint.textContent='Please select a rating'; hint.style.color='var(--clr-red)'; }
+      valid = false;
+    }
+    if (!valid) return;
+
+    // Save to localStorage
+    var review = { name:name, country:country, product:product, text:text, rating:rating, ts: Date.now() };
+    var stored = JSON.parse(localStorage.getItem('shotric_reviews') || '[]');
+    stored.unshift(review);
+    localStorage.setItem('shotric_reviews', JSON.stringify(stored));
+
+    // Inject into carousel immediately
+    var track = document.getElementById('reviews-track');
+    if (track) {
+      var card = renderUserReview(review);
+      card.style.borderColor = 'rgba(225,29,72,0.5)';
+      track.insertBefore(card, track.firstChild);
+      track.appendChild(renderUserReview(review));
+    }
+
+    // Show success
+    var formWrap = document.getElementById('review-form-wrap');
+    var success  = document.getElementById('review-success');
+    if (formWrap) formWrap.hidden = true;
+    if (success)  success.hidden  = false;
+  });
+});
+
+// Expose modal functions globally (classic script)
+window.openReviewModal  = openReviewModal;
+window.closeReviewModal = closeReviewModal;
