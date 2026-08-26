@@ -945,3 +945,19 @@ document.addEventListener('DOMContentLoaded', function() {
 // Expose modal functions globally (classic script)
 window.openReviewModal  = openReviewModal;
 window.closeReviewModal = closeReviewModal;
+
+/* Show empty state when no reviews exist */
+document.addEventListener('DOMContentLoaded', function() {
+  var track = document.getElementById('reviews-track');
+  var empty = document.getElementById('reviews-empty');
+  if (!track || !empty) return;
+  function updateEmpty() {
+    var hasCards = track.querySelectorAll('.review-card').length > 0;
+    empty.hidden = hasCards;
+    var wrapper = document.getElementById('real-reviews-wrapper');
+    if (wrapper) wrapper.style.display = hasCards ? 'block' : 'none';
+  }
+  updateEmpty();
+  var obs = new MutationObserver(updateEmpty);
+  obs.observe(track, { childList: true });
+});
