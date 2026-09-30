@@ -300,16 +300,43 @@ section {
 
 .nav-links {
   display: flex;
-  gap: 2rem;
   align-items: center;
+}
+
+/* The UL inside nav-links must be flex row */
+.nav-links ul {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links li {
+  list-style: none;
+}
+
+/* Navbar right-side actions group */
+.navbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-shrink: 0;
 }
 
 .nav-link {
   color: var(--clr-muted);
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   font-weight: 500;
+  text-decoration: none;
   transition: color var(--transition);
-  padding: 0.5rem 0;
+  padding: 0.5rem 0.875rem;
+  white-space: nowrap;
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 .nav-link:hover {
   color: #fff;
