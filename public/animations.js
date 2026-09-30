@@ -11,6 +11,7 @@
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add('sr-visible');
+          entry.target.classList.add('in-view'); // also trigger animate-on-scroll system
           revealObserver.unobserve(entry.target);
         }
       });
@@ -263,7 +264,7 @@
     initOrbParallax();
     initMagneticButtons();
     initCardTilt();
-    initSplitText();
+    // initSplitText(); // Disabled: breaks text-gradient spans inside titles
     initScrollProgress();
     initHeroParallax();
     initCursorGlow();

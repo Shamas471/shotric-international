@@ -96,39 +96,44 @@ document.addEventListener('DOMContentLoaded', () => {
     requestAnimationFrame(step);
   };
 
-  /* ── 5. Intersection Observer ────────────────────────── */
-  const observerOptions = { threshold: 0.15, rootMargin: '0px 0px -60px 0px' };
-  const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('in-view');
-        revealObserver.unobserve(entry.target);
-      }
+  /* ── 5. Scroll Reveal — observes .animate-on-scroll elements ──────── */
+  function initScrollReveal() {
+    // For hero section elements — show immediately (they are above the fold)
+    document.querySelectorAll('.hero .animate-on-scroll').forEach(el => {
+      el.classList.add('in-view');
     });
-  }, observerOptions);
 
-  ['.service-card', '.product-category', '.mfg-feature', '.stat-item', '.section-header', '.hero__badge', '.cert-badge'].forEach(selector => {
-    document.querySelectorAll(selector).forEach((el, i) => {
-      el.classList.add('reveal');
-      el.style.transitionDelay = `${i * 0.08}s`;
-      revealObserver.observe(el);
-    });
-  });
+    // For all other .animate-on-scroll elements, use IntersectionObserver
+    const scrollEls = Array.from(document.querySelectorAll('.animate-on-scroll:not(.in-view)'));
+    if (!scrollEls.length) return;
 
-  const statObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const numEl  = entry.target.querySelector('.stat-number');
-        const target = parseFloat(numEl?.dataset.target || '0');
-        if (numEl && !numEl.dataset.animated) {
-          numEl.dataset.animated = 'true';
-          animateCounter(numEl, target);
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          observer.unobserve(entry.target);
         }
-        statObserver.unobserve(entry.target);
-      }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+    scrollEls.forEach((el, i) => {
+      el.style.transitionDelay = `${Math.min(i % 6, 5) * 0.08}s`;
+      observer.observe(el);
     });
-  }, { threshold: 0.5 });
-  document.querySelectorAll('.stat-item').forEach(el => statObserver.observe(el));
+
+    // Fail-safe: after 3 seconds, force everything visible
+    // so content never stays invisible due to observer failure
+    setTimeout(() => {
+      document.querySelectorAll('.animate-on-scroll:not(.in-view)').forEach(el => {
+        el.classList.add('in-view');
+      });
+    }, 3000);
+  }
+
+  initScrollReveal();
+  // Re-init on click (for any dynamically added content)
+  document.addEventListener('click', () => setTimeout(initScrollReveal, 200));
+
 
   /* ── 6. Quote Form ───────────────────────────────────── */
   const quoteForm = document.getElementById('quote-form');

@@ -11,6 +11,7 @@
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add('sr-visible');
+          entry.target.classList.add('in-view'); // also trigger animate-on-scroll system
           revealObserver.unobserve(entry.target);
         }
       });
@@ -84,22 +85,29 @@
     const counterObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          entry.target.querySelectorAll('.stat-card__number, [data-counter]').forEach((n) => {
-            const raw = n.textContent.trim();
-            const numMatch = raw.match(/\d+/);
-            if (numMatch) {
-              n.dataset.target = numMatch[0];
-              n.dataset.suffix = raw.replace(/\d+/, '');
-              animateCounter(n);
+          /* Match both old and new stat number patterns */
+          entry.target.querySelectorAll('.stat-number, .stat-card__number, [data-counter]').forEach((n) => {
+            const target = parseInt(n.dataset.target || n.textContent, 10);
+            if (isNaN(target) || target === 0) return;
+            const suffix = n.nextElementSibling ? n.nextElementSibling.textContent : (n.dataset.suffix || '');
+            const duration = 1800;
+            const startTime = performance.now();
+            function update(now) {
+              const progress = Math.min((now - startTime) / duration, 1);
+              const eased    = 1 - Math.pow(1 - progress, 3);
+              n.textContent  = Math.floor(eased * target);
+              if (progress < 1) requestAnimationFrame(update);
             }
+            requestAnimationFrame(update);
           });
           counterObserver.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.4 });
+    }, { threshold: 0.3 });
     const statsBar = document.getElementById('stats-bar');
     if (statsBar) counterObserver.observe(statsBar);
   }
+
 
   /* ── 4. FLOATING PARTICLE SYSTEM ────────────────────────────── */
   function initParticles() {
@@ -256,7 +264,7 @@
     initOrbParallax();
     initMagneticButtons();
     initCardTilt();
-    initSplitText();
+    // initSplitText(); // Disabled: breaks text-gradient spans inside titles
     initScrollProgress();
     initHeroParallax();
     initCursorGlow();

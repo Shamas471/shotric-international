@@ -408,7 +408,7 @@ section {
   flex-direction: column;
   padding: 80px 24px 24px;
 }
-.mobile-menu.is-open {
+.mobile-menu.open {
   display: flex;
 }
 .mobile-menu .nav-links {
@@ -1282,20 +1282,7 @@ section.markets-banner {
   font-weight: 600;
   transition: color var(--transition);
 }
-.faq-question::after {
-  content: '+';
-  font-size: 1.5rem;
-  font-weight: 400;
-  color: var(--clr-muted);
-  transition: transform var(--transition);
-}
 
-.faq-answer {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease;
-  color: var(--clr-muted);
-}
 .faq-answer-inner {
   padding-bottom: 1.5rem;
 }
@@ -1306,10 +1293,7 @@ section.markets-banner {
 .faq-item.is-open .faq-question {
   color: var(--clr-red);
 }
-.faq-item.is-open .faq-question::after {
-  content: '−';
-  transform: rotate(180deg);
-}
+.faq-item.is-open 
 
 /* ==========================================================================
    21. GET QUOTE SECTION
@@ -1597,8 +1581,7 @@ section.get-quote {
   border-radius: 50%;
   cursor: pointer;
   border: 2px solid transparent;
-  transition: transform var(--transition);
-}
+  
 .pd-swatch:hover {
   transform: scale(1.1);
 }
@@ -2327,11 +2310,10 @@ select.form-input { cursor: pointer; }
 .rsp-star { font-size: 2rem; cursor: pointer; color: var(--clr-muted-2); transition: color 0.15s, transform 0.15s; }
 .rsp-star:hover, .rsp-star.active { color: var(--clr-amber); transform: scale(1.1); }
 .rsp-hint { font-size: 0.8rem; color: var(--clr-muted-2); display: block; margin-bottom: 1rem; }
-.catalog-modal.is-open { display: flex !important; }
+.catalog-modal.is-open { display: flex !important; opacity: 1; pointer-events: all; }
 
 /* ── Animate on Scroll ── */
-.animate-on-scroll { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
-.animate-on-scroll.in-view { opacity: 1; transform: none; }
+
 
 /* ── Section Header ── */
 .section-header { text-align: center; max-width: 680px; margin: 0 auto 3rem; }
@@ -2367,3 +2349,200 @@ select.form-input { cursor: pointer; }
   .cat-modal__products-grid { grid-template-columns: repeat(2, 1fr); }
   .capability-bar__inner { justify-content: flex-start; }
 }
+/* =========================================================
+   COMPREHENSIVE BUG FIXES — FOUNDATION AUDIT 2026-10-01
+   ========================================================= */
+
+/* ── FIX B1: sr-init / sr-visible system from animations.js ── */
+.sr-init {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.sr-visible {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+/* ── FIX B3: Hero content always visible — no animation delay ── */
+.hero .animate-on-scroll,
+.hero__content {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* ── Fail-safe: if animate-on-scroll never gets in-view, show content ── */
+/* After 4s CSS animation fallback */
+@keyframes forceVisible {
+  to { opacity: 1; transform: none; }
+}
+.animate-on-scroll {
+  animation: forceVisible 0s 4s forwards;
+}
+.animate-on-scroll.in-view {
+  animation: none;
+  opacity: 1;
+  transform: none;
+}
+
+/* ── FIX B4: FAQ accordion — match JS which uses display:block ── */
+/* Remove max-height approach, use display */
+.faq-answer {
+  display: none;
+  overflow: hidden;
+  color: var(--clr-muted);
+  padding: 0;
+  transition: none;
+  max-height: unset;
+}
+.faq-answer p { margin-bottom: 1rem; font-size: 0.9rem; line-height: 1.7; }
+.faq-item.is-open .faq-answer {
+  display: block;
+  padding-bottom: 1.25rem;
+}
+/* Rotate the faq-icon when open */
+.faq-item.is-open .faq-icon {
+  transform: rotate(45deg);
+  display: inline-block;
+}
+
+/* ── FIX: navbar scrolled class — JS uses 'scrolled', CSS had 'navbar--scrolled' ── */
+#navbar.scrolled {
+  background: rgba(9, 9, 11, 0.97) !important;
+  top: 0 !important;
+  box-shadow: 0 1px 24px rgba(0,0,0,0.5);
+}
+
+/* ── FIX: catalog-modal must be hidden by default via CSS, shown via is-open ── */
+.catalog-modal {
+  display: none;
+}
+.catalog-modal.is-open {
+  display: flex !important;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ── FIX: pd-modal / cat-modal / review-modal — ensure is-open shows them ── */
+.pd-modal,
+.cat-modal,
+.review-modal {
+  display: none;
+}
+.pd-modal.is-open,
+.cat-modal.is-open,
+.review-modal.is-open {
+  display: flex !important;
+  pointer-events: all;
+  opacity: 1;
+}
+
+/* ── FIX: product-card images must not overflow ── */
+.product-card__img-wrap {
+  background: var(--clr-bg-3);
+}
+.product-card__img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+/* ── FIX: section-title text-gradient must survive initSplitText ── */
+.section-title .text-gradient {
+  background: linear-gradient(135deg, var(--clr-red), #f43f5e);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
+}
+/* word spans from initSplitText should be inline */
+.section-title .word-wrap { display: inline; overflow: visible; }
+.section-title .word { display: inline; }
+
+/* ── FIX: footer upper grid needs proper columns ── */
+.footer__upper {
+  display: grid;
+  grid-template-columns: 1.6fr repeat(4, 1fr);
+  gap: 2rem;
+  padding: 4rem 0 2rem;
+}
+@media (max-width: 960px) {
+  .footer__upper { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 580px) {
+  .footer__upper { grid-template-columns: 1fr; }
+}
+
+/* ── FIX: social-icon styling ── */
+.social-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--clr-bg-3);
+  border: 1px solid var(--clr-border);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  text-decoration: none;
+  color: var(--clr-muted);
+}
+.social-icon:hover { background: var(--clr-red); border-color: var(--clr-red); color: #fff; }
+.footer__socials { display: flex; gap: 0.5rem; margin-top: 1rem; }
+
+/* ── FIX: faq-icon should not be duplicated by ::after (already removed) ── */
+.faq-icon {
+  font-size: 1.4rem;
+  color: var(--clr-red);
+  flex-shrink: 0;
+  transition: transform 0.2s;
+  font-weight: 300;
+  line-height: 1;
+}
+
+/* ── FIX: mobile menu nav layout ── */
+.mobile-menu__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 5rem 2rem 2rem;
+  height: 100%;
+  overflow-y: auto;
+}
+.mobile-nav-link {
+  display: block;
+  padding: 0.875rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--clr-text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--clr-border);
+  background: none;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  transition: color 0.2s;
+}
+.mobile-nav-link:hover, .mobile-nav-link--active { color: var(--clr-red); }
+.mobile-nav-sub {
+  display: block;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  color: var(--clr-muted);
+  text-decoration: none;
+}
+.mobile-nav-sub:hover { color: var(--clr-red); }
+.mobile-nav-accordion__body { overflow: hidden; }
+
+/* ── FIX: hamburger open state ── */
+.hamburger-btn.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger-btn.open span:nth-child(2) { opacity: 0; }
+.hamburger-btn.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
