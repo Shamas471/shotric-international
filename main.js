@@ -44,179 +44,156 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   window.addEventListener('scroll', onScroll, { passive: true });
 
-  /* ── 2. Mobile Menu Toggle ───────────────────────────── */
-  const hamburger  = document.getElementById('hamburger-btn');
-  const mobileMenu = document.getElementById('mobile-menu');
+  /* ═══════════════════════════════════════════════════════
+     NAV SYSTEM — Mega Menu + Mobile Menu
+     All close triggers: click outside, scroll, Escape, leave
+     ═══════════════════════════════════════════════════════ */
 
-  const toggleMobileMenu = () => {
-    const isOpen = hamburger.getAttribute('aria-expanded') === 'true';
-    hamburger.setAttribute('aria-expanded', String(!isOpen));
-    hamburger.classList.toggle('open', !isOpen);
-    mobileMenu.classList.toggle('open', !isOpen);
-    mobileMenu.setAttribute('aria-hidden', String(isOpen));
-    document.body.style.overflow = isOpen ? '' : 'hidden';
-  };
+  const navProductsBtn = document.getElementById('nav-products-btn');
+  const navProductsLi  = document.getElementById('nav-products-li');
+  const megaMenu       = document.getElementById('mega-menu');
+  const hamburgerBtn   = document.getElementById('hamburger-btn');
+  const mobileMenu     = document.getElementById('mobile-menu');
+  const mobileClose    = document.getElementById('mobile-menu-close');
+  const mobileBackdrop = document.getElementById('mobile-backdrop');
+  const mobileAccBtn   = document.getElementById('mobile-nav-products');
+  const mobileAccBody  = document.getElementById('mobile-products-body');
 
-  hamburger?.addEventListener('click', toggleMobileMenu);
-  mobileMenu?.addEventListener('click', e => {
-    if (e.target === mobileMenu) toggleMobileMenu();
-  });
-  mobileMenu?.querySelectorAll('.mobile-nav-link:not(.mobile-accordion__trigger), .mobile-sub-link, .btn--full').forEach(link => {
-    link.addEventListener('click', () => {
-      if (mobileMenu.classList.contains('open')) toggleMobileMenu();
-    });
-  });
+  let megaOpen = false;
+  let megaCloseTimer = null;
 
-  /* ── 3. Mobile Accordion (Products) ─────────────────── */
-  const accordionTrigger = document.getElementById('mobile-nav-products');
-  const accordionBody    = document.getElementById('mobile-products-body');
-  accordionTrigger?.addEventListener('click', () => {
-    const expanded = accordionTrigger.getAttribute('aria-expanded') === 'true';
-    accordionTrigger.setAttribute('aria-expanded', String(!expanded));
-    if (expanded) {
-      accordionBody.setAttribute('hidden', '');
-    } else {
-      accordionBody.removeAttribute('hidden');
-    }
-  });
-
-  /* ── 4. Stat Counter Animation ───────────────────────── */
-  const animateCounter = (el, target) => {
-    const duration = 2000;
-    const start    = performance.now();
-    const isFloat  = target % 1 !== 0;
-    const step = now => {
-      const elapsed  = now - start;
-      const progress = Math.min(elapsed / duration, 1);
-      const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
-      const value = isFloat ? (target * ease).toFixed(1) : Math.round(target * ease);
-      el.textContent = value;
-      if (progress < 1) requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
-  };
-
-  /* ── 5. Scroll Reveal — observes .animate-on-scroll elements ──────── */
-  function initScrollReveal() {
-    // For hero section elements — show immediately (they are above the fold)
-    document.querySelectorAll('.hero .animate-on-scroll').forEach(el => {
-      el.classList.add('in-view');
-    });
-
-    // For all other .animate-on-scroll elements, use IntersectionObserver
-    const scrollEls = Array.from(document.querySelectorAll('.animate-on-scroll:not(.in-view)'));
-    if (!scrollEls.length) return;
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('in-view');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-
-    scrollEls.forEach((el, i) => {
-      el.style.transitionDelay = `${Math.min(i % 6, 5) * 0.08}s`;
-      observer.observe(el);
-    });
-
-    // Fail-safe: after 3 seconds, force everything visible
-    // so content never stays invisible due to observer failure
-    setTimeout(() => {
-      document.querySelectorAll('.animate-on-scroll:not(.in-view)').forEach(el => {
-        el.classList.add('in-view');
-      });
-    }, 3000);
+  /* ─── Mega Menu Open/Close ─────────────────────────── */
+  function openMega() {
+    clearTimeout(megaCloseTimer);
+    if (megaOpen) return;
+    megaOpen = true;
+    megaMenu.classList.add('mega-open');
+    navProductsLi.classList.add('mega-open');
+    navProductsBtn.setAttribute('aria-expanded', 'true');
+    if (megaMenu.hasAttribute('hidden')) megaMenu.removeAttribute('hidden');
   }
 
-  initScrollReveal();
-  // Re-init on click (for any dynamically added content)
-  document.addEventListener('click', () => setTimeout(initScrollReveal, 200));
-
-
-  /* ── 6. Quote Form ───────────────────────────────────── */
-  const quoteForm = document.getElementById('quote-form');
-  const submitBtn = document.getElementById('quote-submit-btn');
-
-  quoteForm?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const required = quoteForm.querySelectorAll('[required]');
-    let valid = true;
-    required.forEach(field => {
-      if (!field.value.trim()) {
-        valid = false;
-        field.style.borderColor = 'var(--clr-red)';
-        field.style.boxShadow = '0 0 0 3px rgba(225,29,72,0.25)';
-        const handler = () => {
-          field.style.borderColor = '';
-          field.style.boxShadow = '';
-          field.removeEventListener('input', handler);
-        };
-        field.addEventListener('input', handler);
-      }
-    });
-    if (!valid) {
-      quoteForm.querySelector('[required]:placeholder-shown, [required]:not(:valid)')?.focus();
-      return;
+  function closeMega(instant) {
+    if (!megaOpen) return;
+    clearTimeout(megaCloseTimer);
+    if (instant) {
+      _doCloseMega();
+    } else {
+      megaCloseTimer = setTimeout(_doCloseMega, 180);
     }
-    const originalText = submitBtn.innerHTML;
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Sending...`;
-    submitBtn.style.opacity = '0.7';
-    await new Promise(r => setTimeout(r, 1800));
-    submitBtn.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Quote Sent! We'll be in touch within 24h`;
-    submitBtn.style.background = 'linear-gradient(135deg, #059669, #047857)';
-    submitBtn.style.opacity = '1';
-    setTimeout(() => {
-      submitBtn.innerHTML = originalText;
-      submitBtn.style.background = '';
-      submitBtn.disabled = false;
-      quoteForm.reset();
-    }, 5000);
+  }
+
+  function _doCloseMega() {
+    megaOpen = false;
+    megaMenu.classList.remove('mega-open');
+    navProductsLi.classList.remove('mega-open');
+    navProductsBtn.setAttribute('aria-expanded', 'false');
+  }
+
+  /* Hover: open on enter Products button or mega menu area */
+  if (navProductsLi) {
+    navProductsLi.addEventListener('mouseenter', openMega);
+    navProductsLi.addEventListener('mouseleave', () => closeMega(false));
+  }
+  if (megaMenu) {
+    megaMenu.addEventListener('mouseenter', () => { clearTimeout(megaCloseTimer); });
+    megaMenu.addEventListener('mouseleave', () => closeMega(false));
+  }
+
+  /* Click toggle (touch/keyboard users) */
+  navProductsBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    megaOpen ? closeMega(true) : openMega();
   });
 
-  /* ── 7. Smooth Anchor Scrolling ──────────────────────── */
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', e => {
-      const target = document.querySelector(anchor.getAttribute('href'));
-      if (target) {
-        e.preventDefault();
-        const offset = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) + 40 || 120;
-        const top = target.getBoundingClientRect().top + window.scrollY - offset;
-        window.scrollTo({ top, behavior: 'smooth' });
-      }
+  /* Close on click outside */
+  document.addEventListener('click', (e) => {
+    if (!navProductsLi?.contains(e.target) && !megaMenu?.contains(e.target)) {
+      closeMega(true);
+    }
+  });
+
+  /* Close on scroll */
+  let scrollCloseDone = false;
+  window.addEventListener('scroll', () => {
+    if (megaOpen) closeMega(true);
+    // Navbar scroll-shrink behaviour
+    const scrollY = window.scrollY;
+    if (navbar) {
+      navbar.classList.toggle('navbar--scrolled', scrollY > 50);
+      navbar.classList.toggle('scrolled', scrollY > 50);
+    }
+    if (utilityBar) {
+      utilityBar.style.transform = scrollY > 80 ? 'translateY(-100%)' : '';
+    }
+  }, { passive: true });
+
+  /* Close mega menu items — wire onclick for category modals */
+  megaMenu?.querySelectorAll('.mega-menu__item, .mega-menu__all-link, .mega-menu__cta, [href="#get-quote"]').forEach(el => {
+    el.addEventListener('click', () => {
+      const cat = el.dataset.cat;
+      if (cat) { closeMega(true); setTimeout(() => openCategoryModal(cat), 50); }
+      else closeMega(true);
     });
   });
 
-  /* ── 8. Active Nav Link Highlighting ─────────────────── */
-  const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav-link');
-  const navObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const id = entry.target.id;
-        navLinks.forEach(link => {
-          link.classList.toggle('nav-link--active',
-            link.getAttribute('href') === `/${id}` || link.getAttribute('href') === `#${id}`
-          );
-        });
-      }
-    });
-  }, { threshold: 0.4, rootMargin: '-80px 0px -50% 0px' });
-  sections.forEach(s => navObserver.observe(s));
+  /* ─── Mobile Menu Open/Close ───────────────────────── */
+  function openMobileMenu() {
+    mobileMenu.classList.add('open');
+    mobileMenu.setAttribute('aria-hidden', 'false');
+    hamburgerBtn.setAttribute('aria-expanded', 'true');
+    hamburgerBtn.classList.add('open');
+    if (mobileBackdrop) { mobileBackdrop.removeAttribute('hidden'); }
+    document.body.style.overflow = 'hidden';
+  }
 
-  /* ── 9. Input Focus Effects ──────────────────────────── */
-  document.querySelectorAll('.form-input').forEach(input => {
-    input.addEventListener('focus', () => input.closest('.form-group')?.classList.add('focused'));
-    input.addEventListener('blur',  () => input.closest('.form-group')?.classList.remove('focused'));
+  function closeMobileMenu() {
+    mobileMenu.classList.remove('open');
+    mobileMenu.setAttribute('aria-hidden', 'true');
+    hamburgerBtn.setAttribute('aria-expanded', 'false');
+    hamburgerBtn.classList.remove('open');
+    if (mobileBackdrop) { mobileBackdrop.setAttribute('hidden', ''); }
+    document.body.style.overflow = '';
+  }
+
+  hamburgerBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    mobileMenu.classList.contains('open') ? closeMobileMenu() : openMobileMenu();
+  });
+  mobileClose?.addEventListener('click', closeMobileMenu);
+  mobileBackdrop?.addEventListener('click', closeMobileMenu);
+
+  /* Mobile accordion — Products sub-menu */
+  mobileAccBtn?.addEventListener('click', () => {
+    const expanded = mobileAccBtn.getAttribute('aria-expanded') === 'true';
+    mobileAccBtn.setAttribute('aria-expanded', String(!expanded));
+    if (expanded) {
+      mobileAccBody?.setAttribute('hidden', '');
+    } else {
+      mobileAccBody?.removeAttribute('hidden');
+    }
   });
 
-  /* ── 10. Keyboard Trap for Mobile Menu ───────────────── */
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && mobileMenu?.classList.contains('open')) {
-      toggleMobileMenu();
-      hamburger?.focus();
+  /* Wire mobile sub-links to category modals */
+  mobileMenu?.querySelectorAll('.mobile-nav-sub[data-cat]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const cat = link.dataset.cat;
+      closeMobileMenu();
+      setTimeout(() => openCategoryModal(cat), 200);
+    });
+  });
+
+  /* Close mobile on any nav link click */
+  mobileMenu?.querySelectorAll('.mobile-nav-link:not(.mobile-nav-link--accordion), .mobile-menu__actions a').forEach(link => {
+    link.addEventListener('click', closeMobileMenu);
+  });
+
+  /* Escape key — closes either */
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      if (megaOpen) { closeMega(true); navProductsBtn?.focus(); }
+      if (mobileMenu?.classList.contains('open')) { closeMobileMenu(); hamburgerBtn?.focus(); }
     }
   });
 
