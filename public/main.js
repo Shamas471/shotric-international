@@ -287,6 +287,59 @@ document.addEventListener('DOMContentLoaded', () => {
     if (pendingCatalogUrl) triggerDownload(pendingCatalogUrl);
   });
 
+  /* ── FAQ ACCORDION ─────────────────────────────────── */
+  (function initFAQ() {
+    const faqList = document.getElementById('faq-list');
+    if (!faqList) return;
+
+    // Remove any legacy .faq-icon spans (old duplicate icon system)
+    faqList.querySelectorAll('.faq-icon').forEach(el => el.remove());
+
+    const items = faqList.querySelectorAll('.faq-item');
+
+    items.forEach(item => {
+      const btn    = item.querySelector('.faq-question');
+      const answer = item.querySelector('.faq-answer');
+      if (!btn || !answer) return;
+
+      // Ensure answer starts closed
+      answer.removeAttribute('hidden');
+      answer.classList.remove('is-open');
+
+      btn.addEventListener('click', () => {
+        const isOpen = btn.getAttribute('aria-expanded') === 'true';
+
+        // Close all other items first
+        items.forEach(other => {
+          const ob = other.querySelector('.faq-question');
+          const oa = other.querySelector('.faq-answer');
+          if (ob && oa && ob !== btn) {
+            ob.setAttribute('aria-expanded', 'false');
+            oa.classList.remove('is-open');
+          }
+        });
+
+        // Toggle this item
+        if (isOpen) {
+          btn.setAttribute('aria-expanded', 'false');
+          answer.classList.remove('is-open');
+        } else {
+          btn.setAttribute('aria-expanded', 'true');
+          answer.classList.add('is-open');
+        }
+      });
+
+      // Keyboard: Enter and Space already fire click on <button>
+      // Additional: close on Escape when focused inside FAQ
+      btn.addEventListener('keydown', e => {
+        if (e.key === 'Escape') {
+          btn.setAttribute('aria-expanded', 'false');
+          answer.classList.remove('is-open');
+          btn.focus();
+        }
+      });
+    });
+  })();
 }); // end DOMContentLoaded
 
 /* ══════════════════════════════════════════════════════
