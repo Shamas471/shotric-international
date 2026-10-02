@@ -592,57 +592,89 @@
 <!-- ================================================
      OEM / ODM SECTION
 ================================================ -->
-<section class="oem-section" id="oem-section">
-  <div class="container">
-    <div class="section-header animate-on-scroll">
+<section class="oem-section" id="oem-section" aria-label="OEM and ODM Manufacturing Services">
+  <div class="oem-split">
+
+    <!-- LEFT: product image -->
+    <div class="oem-split__img">
+      <img
+        src="/punch-mitts-black.jpg"
+        alt="Custom OEM boxing punch mitts manufactured by Shotric International, Sialkot Pakistan"
+        loading="lazy"
+        onerror="this.onerror=null;this.parentElement.style.background='#111113'"
+      />
+      <!-- Floating badge on image -->
+      <div class="oem-img-badge">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        <span>Made to Your Exact Specifications</span>
+      </div>
+      <!-- Capability tags overlay -->
+      <div class="oem-img-tags">
+        <span class="oem-img-tag">OEM</span>
+        <span class="oem-img-tag">ODM</span>
+        <span class="oem-img-tag">Private Label</span>
+        <span class="oem-img-tag">Custom Branding</span>
+      </div>
+    </div>
+
+    <!-- RIGHT: content -->
+    <div class="oem-split__content animate-on-scroll">
       <span class="section-eyebrow">Custom Manufacturing</span>
-      <h2 class="section-title">OEM &amp; ODM <span class="text-gradient">Services</span></h2>
-      <p class="section-subtitle">Whether you have a complete design brief or need help developing a product from scratch &mdash; we manufacture to your exact requirements.</p>
-    </div>
-    <div class="oem-grid">
-      <div class="oem-cards">
-        <div class="oem-card animate-on-scroll">
-          <div class="oem-card__icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#E11D48" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      <h2 class="oem-split__title">OEM &amp; ODM<br><span class="text-gradient">Services</span></h2>
+      <p class="oem-split__intro">Whether you have a complete design brief or need help developing a product from scratch&nbsp;&mdash; we manufacture to your exact requirements.</p>
+
+      <!-- 4 service blocks in 2x2 grid -->
+      <div class="oem-services">
+        <div class="oem-service">
+          <div class="oem-service__icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
           </div>
-          <h3 class="oem-card__title">OEM Manufacturing</h3>
-          <p class="oem-card__desc">You provide the brand specifications and design requirements &mdash; we manufacture the product to your exact standards. Your branding, your packaging, our production capability.</p>
+          <div>
+            <h3 class="oem-service__title">OEM Manufacturing</h3>
+            <p class="oem-service__desc">Manufacture according to your specifications, materials, branding and requirements.</p>
+          </div>
         </div>
-        <div class="oem-card animate-on-scroll">
-          <div class="oem-card__icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#E11D48" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        <div class="oem-service">
+          <div class="oem-service__icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
           </div>
-          <h3 class="oem-card__title">ODM Development</h3>
-          <p class="oem-card__desc">We help you develop and refine products based on market requirements and your target customer. Share your idea or reference product &mdash; our team handles the rest.</p>
+          <div>
+            <h3 class="oem-service__title">ODM Product Development</h3>
+            <p class="oem-service__desc">Support product development from concept through production.</p>
+          </div>
         </div>
-        <div class="oem-card animate-on-scroll">
-          <div class="oem-card__icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#E11D48" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+        <div class="oem-service">
+          <div class="oem-service__icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
           </div>
-          <h3 class="oem-card__title">Private Label Ready</h3>
-          <p class="oem-card__desc">Launch your own brand with full private label manufacturing. Custom logos, labels, hang tags, packaging and branding applied to any product in our catalog.</p>
+          <div>
+            <h3 class="oem-service__title">Private Label</h3>
+            <p class="oem-service__desc">Custom logos, labels, packaging and branding for your own sports brand.</p>
+          </div>
+        </div>
+        <div class="oem-service">
+          <div class="oem-service__icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M4.93 4.93a10 10 0 000 14.14"/></svg>
+          </div>
+          <div>
+            <h3 class="oem-service__title">Customization</h3>
+            <p class="oem-service__desc">Materials, colors, sizes, logos, printing, embroidery, packaging and more.</p>
+          </div>
         </div>
       </div>
-      <div class="oem-capabilities animate-on-scroll">
-        <h3 class="oem-capabilities__title">Custom Branding Capabilities</h3>
-        <ul class="oem-capability-list">
-          <li class="oem-capability-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Custom Logo &amp; Branding</li>
-          <li class="oem-capability-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Screen Printing</li>
-          <li class="oem-capability-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Sublimation Printing</li>
-          <li class="oem-capability-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Embroidery</li>
-          <li class="oem-capability-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Woven Labels &amp; Hang Tags</li>
-          <li class="oem-capability-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Rubber &amp; PVC Logos</li>
-          <li class="oem-capability-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Custom Colors &amp; Materials</li>
-          <li class="oem-capability-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Custom Packaging</li>
-          <li class="oem-capability-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Heat Transfer Printing</li>
-          <li class="oem-capability-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Leather Embossing</li>
-        </ul>
-        <a href="/oem" class="btn btn--primary" style="margin-top:1.5rem">Learn More About OEM &rarr;</a>
+
+      <!-- CTAs -->
+      <div class="oem-split__actions">
+        <a href="/oem" class="btn btn--primary">
+          Start Your Project
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+        <a href="#get-quote" class="btn btn--ghost">Request a Quote</a>
       </div>
     </div>
+
   </div>
 </section>
-
 <!-- ================================================
      HOW TO ORDER
 ================================================ -->
