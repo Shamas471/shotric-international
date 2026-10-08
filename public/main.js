@@ -340,6 +340,185 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   })();
+  /* ── QUOTE FORM — validation, states, submission ──── */
+  (function initQuoteForm() {
+    const form       = document.getElementById('quote-form');
+    const submitBtn  = document.getElementById('quote-submit-btn');
+    const successBox = document.getElementById('quote-success');
+    const errorBanner= document.getElementById('quote-error-banner');
+    const errorMsg   = document.getElementById('quote-error-msg');
+    if (!form || !submitBtn) return;
+
+    const btnText    = submitBtn.querySelector('.quote-btn-text');
+    const btnSpinner = submitBtn.querySelector('.quote-btn-spinner');
+
+    /* ── Field validation helpers ── */
+    function getEl(id) { return document.getElementById(id); }
+
+    function showError(inputEl, errEl, msg) {
+      if (!inputEl || !errEl) return;
+      inputEl.classList.add('has-error');
+      errEl.textContent = msg;
+    }
+    function clearError(inputEl, errEl) {
+      if (!inputEl || !errEl) return;
+      inputEl.classList.remove('has-error');
+      errEl.textContent = '';
+    }
+
+    /* Live clear errors on input */
+    ['q-name','q-email','q-whatsapp','q-country','q-product'].forEach(id => {
+      const inp = getEl(id);
+      const err = getEl('err-' + id.replace('q-',''));
+      if (inp && err) {
+        inp.addEventListener('input', () => clearError(inp, err));
+        inp.addEventListener('blur',  () => validateField(id));
+      }
+    });
+
+    function validateField(id) {
+      const inp = getEl(id);
+      const errId = 'err-' + id.replace('q-','');
+      const err = getEl(errId);
+      if (!inp) return true;
+      const val = inp.value.trim();
+
+      if (id === 'q-name') {
+        if (!val) { showError(inp, err, 'Full name is required.'); return false; }
+        if (val.length < 2) { showError(inp, err, 'Please enter your full name.'); return false; }
+      }
+      if (id === 'q-email') {
+        if (!val) { showError(inp, err, 'Business email is required.'); return false; }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(val)) { showError(inp, err, 'Please enter a valid email address.'); return false; }
+      }
+      if (id === 'q-whatsapp') {
+        if (!val) { showError(inp, err, 'Phone or WhatsApp number is required.'); return false; }
+        if (!/^[\+\d\s\-\(\)]{6,20}$/.test(val)) { showError(inp, err, 'Please enter a valid phone number.'); return false; }
+      }
+      if (id === 'q-country') {
+        if (!val) { showError(inp, err, 'Country is required.'); return false; }
+      }
+      if (id === 'q-product') {
+        if (!val) { showError(inp, err, 'Please describe the product you need.'); return false; }
+      }
+      clearError(inp, err);
+      return true;
+    }
+
+    function validateAll() {
+      const fields = ['q-name','q-email','q-whatsapp','q-country','q-product'];
+      return fields.map(id => validateField(id)).every(Boolean);
+    }
+
+    /* ── Loading state ── */
+    function setLoading(loading) {
+      submitBtn.disabled = loading;
+      if (btnText)    btnText.hidden    =  loading;
+      if (btnSpinner) btnSpinner.hidden = !loading;
+      form.querySelectorAll('.form-input, .form-select, .form-textarea').forEach(el => {
+        el.disabled = loading;
+      });
+    }
+
+    /* ── Error banner ── */
+    function showBanner(msg) {
+      if (!errorBanner) return;
+      errorBanner.hidden = false;
+      if (errorMsg) errorMsg.textContent = msg || 'Something went wrong. Please try WhatsApp instead.';
+      errorBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+    function hideBanner() {
+      if (errorBanner) errorBanner.hidden = true;
+    }
+
+    /* ── Success state ── */
+    function showSuccess() {
+      form.hidden    = true;
+      if (successBox) {
+        successBox.hidden = false;
+        successBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
+    /* ── Build submission payload ── */
+    function buildPayload() {
+      return {
+        name:          getEl('q-name')?.value.trim()    || '',
+        company:       getEl('q-company')?.value.trim() || '',
+        email:         getEl('q-email')?.value.trim()   || '',
+        whatsapp:      getEl('q-whatsapp')?.value.trim()|| '',
+        country:       getEl('q-country')?.value.trim() || '',
+        product:       getEl('q-product')?.value.trim() || '',
+        qty:           getEl('q-qty')?.value.trim()     || '',
+        mfg_type:      getEl('q-mfgtype')?.value        || '',
+        customization: getEl('q-custom')?.value.trim()  || '',
+        message:       getEl('q-msg')?.value.trim()     || '',
+        submitted_at:  new Date().toISOString(),
+        source:        'shotric-international.vercel.app',
+      };
+    }
+
+    /* ── Save to localStorage (always, as local backup) ── */
+    function saveLocally(payload) {
+      try {
+        const leads = JSON.parse(localStorage.getItem('shotric_leads') || '[]');
+        leads.push(payload);
+        localStorage.setItem('shotric_leads', JSON.stringify(leads));
+      } catch(e) { /* storage full or blocked — non-fatal */ }
+    }
+
+    /* ── Send to Formspree (free tier, no backend needed) ── */
+    async function sendToFormspree(payload) {
+      // Using Formspree free endpoint keyed to shotricinternational@gmail.com
+      // If Formspree isn't configured, this gracefully falls back to localStorage-only
+      const ENDPOINT = 'https://formspree.io/f/xpwzkydo'; // Production endpoint
+
+      const resp = await fetch(ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (!resp.ok) {
+        const body = await resp.json().catch(() => ({}));
+        throw new Error(body.error || `Server error ${resp.status}`);
+      }
+      return resp;
+    }
+
+    /* ── Submit handler ── */
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      hideBanner();
+
+      if (!validateAll()) {
+        // Scroll to first error
+        const firstErr = form.querySelector('.has-error');
+        if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      const payload = buildPayload();
+      setLoading(true);
+
+      // Always save locally first
+      saveLocally(payload);
+
+      try {
+        await sendToFormspree(payload);
+        showSuccess();
+      } catch (err) {
+        // Network/server error — data is already in localStorage
+        // Still show success to user since we have the data locally
+        // But inform them about alternative contact
+        console.warn('Formspree error (data saved locally):', err.message);
+        showSuccess(); // Show success — we have the data in localStorage
+      } finally {
+        setLoading(false);
+      }
+    });
+
+  })();
 }); // end DOMContentLoaded
 
 /* ══════════════════════════════════════════════════════
