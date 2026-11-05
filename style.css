@@ -1873,8 +1873,18 @@ section.how-to-order {
 }
 
 /* ==========================================================================
-   15. QUALITY CONTROL (deprecated — QC merged into mfg-qc-strip above)
+   15. QUALITY CONTROL SECTION
    ========================================================================== */
+.qc-section {
+  padding: 5rem 0;
+  background: var(--clr-bg);
+  border-top: 1px solid var(--clr-border);
+}
+@media (max-width: 768px) {
+  .qc-section {
+    padding: 3rem 0;
+  }
+}
 .qc-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
